@@ -1,36 +1,38 @@
-# Copyright 2017-2020 Gentoo Authors
+# Copyright 2020-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-inherit git-r3 ninja-utils
+LUA_COMPAT=( lua5-{1..4} luajit  )
+inherit lua ninja-utils
 
-DESCRIPTION="Lua Language Server"
+DESCRIPTION="lua language server written in lua"
 HOMEPAGE="https://github.com/sumneko/lua-language-server"
-EGIT_REPO_URI="${HOMEPAGE}"
-EGIT_SUBMODULES=( '*' )
+
+inherit git-r3
+EGIT_REPO_URI="https://github.com/sumneko/${PN}.git"
+
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64"
 IUSE=""
+KEYWORDS="~amd64"
+RESTRICT="strip"
 
-RDEPEND="dev-lang/lua:="
-DEPEND="
-	${RDEPEND}
-	dev-util/ninja
-"
-
-src_unpack() {
-	git-r3_src_unpack
-}
+PATCHES=(
+	"${FILESDIR}/fix-build.patch"
+)
 
 src_compile() {
-	pushd 3rd/luamake > /dev/null || die
-	eninja -f ninja/linux.ninja || die
-	popd > /dev/null || die
-	3rd/luamake/luamake rebuild || die
+	ninja -C 3rd/luamake -f compile/ninja/linux.ninja
+	./3rd/luamake/luamake rebuild
 }
 
 src_install() {
-	dobin bin/Linux/lua-language-server
+	insinto /usr/libexec/"${PN}"
+
+	doins bin/Linux/*
+	doins -r main.lua platform.lua debugger.lua \
+		locale script meta
+
+	sed "s:/usr/:${EPREFIX}&:" "${FILESDIR}"/wrapper | newbin - "${PN}"
 }
