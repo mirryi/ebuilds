@@ -31,7 +31,7 @@ RESTRICT="primaryuri"
 SLOT="0"
 IUSE=""
 
-DEPEND="|| ( >=dev-lang/rust-1.51.0[rls] >=dev-lang/rust-bin-1.51.0[rls] )"
+DEPEND="|| ( >=dev-lang/rust-1.52.0[rls] >=dev-lang/rust-bin-1.52.0[rls] )"
 
 RDEPEND="${DEPEND}"
 
