@@ -1,0 +1,161 @@
+# Copyright 2017-2021 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=7
+
+CRATES="
+	ahash-0.7.2
+	anyhow-1.0.38
+	arrayref-0.3.6
+	arrayvec-0.5.2
+	async-io-1.3.1
+	atty-0.2.14
+	autocfg-1.0.1
+	base64-0.13.0
+	bitflags-0.9.1
+	bitflags-1.2.1
+	bitvec-0.19.5
+	blake2b_simd-0.5.11
+	block-0.1.6
+	byteorder-1.4.3
+	bytes-1.0.1
+	cache-padded-1.1.1
+	cc-1.0.67
+	cfg-if-0.1.10
+	cfg-if-1.0.0
+	chrono-0.4.19
+	clap-3.0.0-beta.2
+	clap_derive-3.0.0-beta.2
+	concurrent-queue-1.2.2
+	constant_time_eq-0.1.5
+	crossbeam-utils-0.8.3
+	derivative-2.2.0
+	dirs-1.0.5
+	dirs-next-2.0.0
+	dirs-sys-next-0.1.2
+	enumflags2-0.6.4
+	enumflags2_derive-0.6.4
+	fastrand-1.4.0
+	funty-1.1.0
+	futures-0.3.13
+	futures-channel-0.3.13
+	futures-core-0.3.13
+	futures-executor-0.3.13
+	futures-io-0.3.13
+	futures-lite-1.11.3
+	futures-macro-0.3.13
+	futures-sink-0.3.13
+	futures-task-0.3.13
+	futures-util-0.3.13
+	getrandom-0.1.16
+	getrandom-0.2.2
+	hashbrown-0.9.1
+	hashbrown-0.11.2
+	heck-0.3.2
+	hermit-abi-0.1.18
+	indexmap-1.6.2
+	instant-0.1.9
+	lazy_static-1.4.0
+	libc-0.2.89
+	log-0.4.14
+	mac-notification-sys-0.3.0
+	malloc_buf-0.0.6
+	memchr-2.3.4
+	mio-0.7.10
+	miow-0.3.6
+	mpd_client-0.6.0
+	mpd_protocol-0.12.1
+	nb-connect-1.0.3
+	nix-0.17.0
+	nom-6.1.2
+	notify-rust-4.3.0
+	ntapi-0.3.6
+	num-integer-0.1.44
+	num-traits-0.2.14
+	objc-0.2.7
+	objc-foundation-0.1.1
+	objc_id-0.1.1
+	once_cell-1.7.2
+	os_str_bytes-2.4.0
+	parking-2.0.0
+	pin-project-1.0.5
+	pin-project-internal-1.0.5
+	pin-project-lite-0.2.6
+	pin-utils-0.1.0
+	polling-2.0.2
+	proc-macro-crate-0.1.5
+	proc-macro-error-1.0.4
+	proc-macro-error-attr-1.0.4
+	proc-macro-hack-0.5.19
+	proc-macro-nested-0.1.7
+	proc-macro2-1.0.24
+	quote-0.3.15
+	quote-1.0.9
+	radium-0.5.3
+	redox_syscall-0.1.57
+	redox_syscall-0.2.5
+	redox_users-0.3.5
+	redox_users-0.4.0
+	rust-argon2-0.8.3
+	scoped-tls-1.0.0
+	serde-1.0.124
+	serde_derive-1.0.124
+	serde_repr-0.1.6
+	shellexpand-2.1.0
+	slab-0.4.2
+	socket2-0.3.19
+	strsim-0.10.0
+	strum-0.8.0
+	strum_macros-0.8.0
+	syn-0.11.11
+	syn-1.0.64
+	synom-0.11.3
+	tap-1.0.1
+	termcolor-1.1.2
+	textwrap-0.12.1
+	time-0.1.44
+	tokio-1.3.0
+	tokio-macros-1.1.0
+	tokio-util-0.6.4
+	toml-0.5.8
+	tracing-0.1.25
+	tracing-attributes-0.1.15
+	tracing-core-0.1.17
+	tracing-futures-0.2.5
+	unicode-segmentation-1.7.1
+	unicode-width-0.1.8
+	unicode-xid-0.0.4
+	unicode-xid-0.2.1
+	vec-arena-1.0.0
+	vec_map-0.8.2
+	version_check-0.9.3
+	void-1.0.2
+	waker-fn-1.1.0
+	wasi-0.9.0+wasi-snapshot-preview1
+	wasi-0.10.0+wasi-snapshot-preview1
+	wepoll-sys-3.0.1
+	winapi-0.3.9
+	winapi-i686-pc-windows-gnu-0.4.0
+	winapi-util-0.1.5
+	winapi-x86_64-pc-windows-gnu-0.4.0
+	winrt-0.4.0
+	winrt-notification-0.2.4
+	wyz-0.2.0
+	xdg-2.2.0
+	xml-rs-0.6.1
+	zbus-1.8.0
+	zbus_macros-1.8.0
+	zvariant-2.6.0
+	zvariant_derive-2.6.0
+"
+
+inherit cargo
+
+DESCRIPTION="A notification daemon for MPD."
+HOMEPAGE="https://github.com/Dophin2009/mpdnd.git"
+SRC_URI="$(cargo_crate_uris ${CRATES}) https://github.com/Dophin2009/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
+
+LICENSE="Apache-2.0 BSD BSD-2 CC0-1.0 MIT MPL-2.0 Unlicense"
+SLOT="0"
+KEYWORDS="~amd64"
+RESTRICT="mirror"
